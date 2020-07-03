@@ -16,7 +16,7 @@ export default class DB {
     console.log({ state });
     // eslint-disable-next-line no-underscore-dangle
     // this.chain.__wrapped__ = state;
-    this.chain.map((n, i) => console.log({ n, i })).value();
+    this.chain.map((n, i) => console.log({ n, i }));
     console.log(this.chain);
     return this.chain;
   }
