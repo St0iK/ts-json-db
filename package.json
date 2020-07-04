@@ -1,13 +1,11 @@
 {
-  "name": "typescript-module-boilerplate",
-  "version": "2.0.0",
+  "name": "ts-json-db",
+  "version": "0.0.1",
   "scripts": {
     "test": "yarn jest --detectOpenHandles",
     "typecheck": "yarn tsc --project ./tsconfig-typecheck.json",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
-    "format": "prettier --write 'src/**/*.{ts,tsx}'",
-    "build": "./scripts/build.sh",
-    "prepublish": "npm run build"
+    "format": "prettier --write 'src/**/*.{ts,tsx}'"
   },
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -40,6 +38,7 @@
   "dependencies": {
     "@types/lodash": "^4.14.157",
     "graceful-fs": "^4.2.4",
+    "is-promise": "^4.0.0",
     "lodash": "^4.17.15"
   }
 }

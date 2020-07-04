@@ -1,35 +1,41 @@
-import { LoDashStatic } from 'lodash';
+import { ObjectChain, LoDashStatic } from 'lodash';
+// Taken from https://github.com/typicode/lowdb/blob/master/src/main.js
+import * as lodash from 'lodash';
+import isPromise from 'is-promise';
 
-export default class DB {
-  private lodash: LoDashStatic;
-  private chain: any;
+export default (adapter: AdapterInterface) => {
+  // Create a fresh copy of lodash
+  const _: LoDashStatic = lodash.runInContext();
+  const db: ObjectChain<object> = _.chain({});
 
-  private adapter: AdapterInterface;
+  // Add write function to lodash
+  // Calls save before returning result
+  _.prototype.write = _.wrap(_.prototype.value, function (func: Function): object {
+    const funcRes: Function = func.apply(this);
+    return db.write(funcRes);
+  });
 
-  constructor(lodash: LoDashStatic, adapter: AdapterInterface) {
-    this.lodash = lodash;
-    this.chain = this.lodash.chain({ test: 1 });
-    this.adapter = adapter;
-  }
+  const plant: (state: object) => ObjectChain<object> = (state: object): ObjectChain<object> => {
+    db.__wrapped__ = state;
+    return db;
+  };
 
-  plant(state: object) {
-    console.log({ state });
-    // eslint-disable-next-line no-underscore-dangle
-    // this.chain.__wrapped__ = state;
-    this.chain.map((n, i) => console.log({ n, i }));
-    console.log(this.chain);
-    return this.chain;
-  }
+  // Expose _ for mixins
+  db._ = _;
 
-  write(data: object) {
-    this.adapter.write(data);
+  db.read = () => {
+    const r = adapter.read();
+    return isPromise(r) ? r.then(plant) : plant(r);
+  };
 
-    console.log('Writing some stuff');
-    console.log({ data });
-  }
+  db.write = (returnValue: object) => {
+    const w = adapter.write(db.getState());
+    return isPromise(w) ? w.then(() => returnValue) : returnValue;
+  };
 
-  read() {
-    const d = this.adapter.read();
-    return this.plant(d);
-  }
-}
+  db.getState = (): object => db.__wrapped__;
+
+  db.setState = (state: object): ObjectChain<object> => plant(state);
+
+  return db.read();
+};

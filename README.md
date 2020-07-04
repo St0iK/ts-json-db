@@ -1,8 +1,12 @@
 # ts-json-db
 
-> Warning: This is in active development
+> Warning: This repo is for experimentation & exploring typescript
 
 ⚡ Experiment in Typescript inspired by lowdb https://github.com/typicode/lowdb
+
+## LowDB
+Checkout lowdb: https://github.com/typicode/lowdb
+
 
 ## Limits
 Convenient method for storing data without setting up a database server. It is fast enough and safe to be used as an embedded database.

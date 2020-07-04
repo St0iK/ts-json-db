@@ -40,6 +40,7 @@ export default class FileSyncAdapter implements AdapterInterface {
   }
 
   write(data: object): void {
+    console.log({ data });
     writeFileSync(this.source, this.serialize(data));
   }
 }

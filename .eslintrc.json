@@ -1,6 +1,9 @@
 {
   "parser": "@typescript-eslint/parser",
-  "plugins": ["typescript", "import"],
+  "plugins": [
+    "typescript",
+    "import"
+  ],
   "extends": [
     "airbnb",
     "prettier",
