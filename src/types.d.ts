@@ -4,6 +4,6 @@ interface AdapterInterface {
 }
 
 interface SerializerInterface {
-  serialize: (data: object) => unknown;
-  deserialize: (data: object) => unknown;
+  serialize: (data: object) => string;
+  deserialize: (data: string) => object;
 }

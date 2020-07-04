@@ -1,9 +1,5 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs';
-import StringSerializer from '../serializers/StringSerializer';
-
-function stringify(obj) {
-  return JSON.stringify(obj, null, 2);
-}
+import StringSerializer from '../serializers/JSONSerializer';
 
 export default class FileSyncAdapter implements AdapterInterface {
   private source: string;
@@ -11,8 +7,6 @@ export default class FileSyncAdapter implements AdapterInterface {
   private defaultValue: object;
 
   private serializer: SerializerInterface;
-
-  private deserialize: Function;
 
   constructor(source: string, { defaultValue = {} } = {}, serializer: SerializerInterface = new StringSerializer()) {
     this.source = source;
@@ -40,7 +34,6 @@ export default class FileSyncAdapter implements AdapterInterface {
   }
 
   write(data: object): void {
-    console.log({ data });
     writeFileSync(this.source, this.serializer.serialize(data));
   }
 }
